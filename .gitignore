@@ -1,0 +1,9 @@
+/.vscode
+/addresspool.yaml
+/cert-manager
+/ingress.yml
+/service-1.yml
+/service-2.yml
+/service-3.yml
+/setup.md
+/storage
