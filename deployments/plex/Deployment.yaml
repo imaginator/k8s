@@ -22,9 +22,9 @@ spec:
         app: plexserver
     spec:
       volumes:
-      - name: plex-config
+      - name: plex-data
         persistentVolumeClaim:
-          claimName: plexserver-pvc-config  # < pvc name we created in the previous yaml
+          claimName: plexserver-pvc-data  # < pvc name we created in the previous yaml
       - name: plex-films
         persistentVolumeClaim:
           claimName: plexserver-pvc-film
@@ -55,7 +55,7 @@ spec:
           value: Europe/Amsterdam  # < Timezone
         volumeMounts:            # < the volume mount in the container. Look at the relation volumelabel->pvc->pv
         - mountPath: /config     # < mount location in the container
-          name: plex-config  # < volumelabel configured earlier in the yaml file
+          name: plex-data
         - mountPath: /media/film
           name: plex-films
         - mountPath: /media/tv
