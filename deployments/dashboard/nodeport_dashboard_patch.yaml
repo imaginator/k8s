@@ -1,0 +1,7 @@
+# kubectl -n kubernetes-dashboard patch svc kubernetes-dashboard --patch "$(cat nodeport_dashboard_patch.yaml)"
+spec:
+  ports:
+  - nodePort: 32000
+    port: 443
+    protocol: TCP
+    targetPort: 8443
