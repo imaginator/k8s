@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-pvc-data
+  namespace: jellyfin
+spec:
+  storageClassName: ""
+  volumeName: jellyfin-pv-filesystem-data
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-pvc-film
+  namespace: jellyfin
+spec:
+  storageClassName: ""
+  volumeName: jellyfin-pv-filesystem-film
+  accessModes:
+    - ReadOnlyMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-pvc-tv
+  namespace: jellyfin
+spec:
+  storageClassName: ""
+  volumeName: jellyfin-pv-filesystem-tv
+  accessModes:
+    - ReadOnlyMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-pvc-audiobooks
+  namespace: jellyfin
+spec:
+  storageClassName: ""
+  volumeName: jellyfin-pv-filesystem-audiobooks
+  accessModes:
+    - ReadOnlyMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-pvc-photos
+  namespace: jellyfin
+spec:
+  storageClassName: ""
+  volumeName: jellyfin-pv-filesystem-photos
+  accessModes:
+    - ReadOnlyMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-pvc-music
+  namespace: jellyfin
+spec:
+  storageClassName: ""
+  volumeName: jellyfin-pv-filesystem-music
+  accessModes:
+    - ReadOnlyMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi

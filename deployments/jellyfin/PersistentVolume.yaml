@@ -1,0 +1,106 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-pv-filesystem-data
+  namespace: jellyfin
+spec:
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: /srv/k8s/pv/jellyfin
+    type: ''
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  volumeMode: Filesystem
+
+--- 
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-pv-filesystem-film
+  namespace: jellyfin
+spec:
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: /srv/video/Film
+  accessModes:
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  volumeMode: Filesystem
+
+--- 
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-pv-filesystem-tv
+  namespace: jellyfin
+spec:
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: /srv/video/TV
+  accessModes:
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  volumeMode: Filesystem
+
+--- 
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-pv-filesystem-audiobooks
+  namespace: jellyfin
+spec:
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: /srv/audio/audiobooks
+  accessModes:
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  volumeMode: Filesystem
+
+--- 
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-pv-filesystem-photos
+  namespace: jellyfin
+spec:
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: /srv/photos
+  accessModes:
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  volumeMode: Filesystem
+
+--- 
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-pv-filesystem-music
+  namespace: jellyfin
+spec:
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: /srv/audio/music/Music
+  accessModes:
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  volumeMode: Filesystem

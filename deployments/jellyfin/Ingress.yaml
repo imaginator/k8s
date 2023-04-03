@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jellyfin
+  namespace: jellyfin
+  annotations:
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+spec:
+  tls: # < placing a host in the TLS config will indicate a cert should be created
+  - hosts:
+    - jellyfin.imaginator.com
+    secretName: jellyfin.imaginator.com-tls # < cert-manager will store the created certificate in this secret.
+  rules:
+  - host: jellyfin.imaginator.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: jellyfin
+            port: 
+              name: jellyfin-web
+        pathType: Prefix
+        path: "/"
