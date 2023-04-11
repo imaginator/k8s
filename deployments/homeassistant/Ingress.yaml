@@ -1,6 +1,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
   name: homeassistant
   namespace: homeassistant
 spec:
@@ -8,10 +11,10 @@ spec:
     - host: ha.imagilan
       http:
         paths:
-          - backend:
+          - pathType: Prefix
+            path: /
+            backend:
               service:
-                name: homeassistant
+                name: homeassistant-service
                 port:
-                  name: ha-web
-            pathType: Prefix
-            path: "/"
+                  number: 80

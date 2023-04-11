@@ -7,15 +7,9 @@ metadata:
   namespace: homeassistant
 spec:
   replicas: 1
-  revisionHistoryLimit: 0
   selector:
     matchLabels:
       app: homeassistant
-  strategy:
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
-    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -26,26 +20,11 @@ spec:
           persistentVolumeClaim:
             claimName: homeassistant-pvc-data
       containers:
-        - env:
-            - name: PGID
-              value: "\x31\x30\x30" # < ASCII code for '100'
-            - name: PUID
-              value: "\x31\x30\x33\x35" # < ACII code for '1035'
-            - name: VERSION
-              value: latest
-            - name: TZ
-              value: Europe/Amsterdam
-          volumeMounts:
-            - mountPath: /config
-              name: homeassistant-data
-          image: docker.io/homeassistant/home-assistant:stable
-          imagePullPolicy: Always
+        - image: docker.io/homeassistant/home-assistant:stable
           name: homeassistant
           ports:
             - containerPort: 8123
-              name: ha-web
-              protocol: TCP
+          volumeMounts:
+            - mountPath: /config
+              name: homeassistant-data
           resources: {}
-          stdin: true
-          tty: true
-      restartPolicy: Always
