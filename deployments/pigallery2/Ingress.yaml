@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pigallery2
+  namespace: pigallery2
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: public
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+spec:
+  rules:
+    - host: pigallery2.imagilan
+      http:
+        paths:
+          - backend:
+              service:
+                name: pigallery2
+                port:
+                  name: pigallery2-web
+            pathType: Prefix
+            path: "/"

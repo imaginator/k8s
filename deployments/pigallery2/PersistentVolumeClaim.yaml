@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pigallery2-pvc-data-config
+  namespace: pigallery2
+spec:
+  storageClassName: ""
+  volumeName: pigallery2-pv-filesystem-data-config
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 30Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pigallery2-pvc-data-db
+  namespace: pigallery2
+spec:
+  storageClassName: ""
+  volumeName: pigallery2-pv-filesystem-data-db
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 30Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pigallery2-pvc-data-tmp
+  namespace: pigallery2
+spec:
+  storageClassName: ""
+  volumeName: pigallery2-pv-filesystem-data-tmp
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 30Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pigallery2-pvc-photos
+  namespace: pigallery2
+spec:
+  storageClassName: ""
+  volumeName: pigallery2-pv-filesystem-photos
+  accessModes:
+    - ReadOnlyMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi

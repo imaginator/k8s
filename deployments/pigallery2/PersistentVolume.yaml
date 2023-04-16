@@ -1,0 +1,69 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pigallery2-pv-filesystem-data-config
+  namespace: pigallery2
+spec:
+  capacity:
+    storage: 30Gi
+  hostPath:
+    path: /srv/k8s/pv/pigallery2/config
+    type: ""
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  volumeMode: Filesystem
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pigallery2-pv-filesystem-data-db
+  namespace: pigallery2
+spec:
+  capacity:
+    storage: 30Gi
+  hostPath:
+    path: /srv/k8s/pv/pigallery2/db
+    type: ""
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  volumeMode: Filesystem
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pigallery2-pv-filesystem-data-tmp
+  namespace: pigallery2
+spec:
+  capacity:
+    storage: 30Gi
+  hostPath:
+    path: /srv/k8s/pv/pigallery2/tmp
+    type: ""
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  volumeMode: Filesystem
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pigallery2-pv-filesystem-photos
+  namespace: pigallery2
+spec:
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: /srv/photos/originals
+  accessModes:
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  volumeMode: Filesystem

@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pigallery2
+  name: pigallery2
+  namespace: pigallery2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pigallery2
+  template:
+    metadata:
+      labels:
+        app: pigallery2
+    spec:
+      volumes:
+        - name: pigallery2-data-config
+          persistentVolumeClaim:
+            claimName: pigallery2-pvc-data-config
+        - name: pigallery2-data-db
+          persistentVolumeClaim:
+            claimName: pigallery2-pvc-data-db
+        - name: pigallery2-data-tmp
+          persistentVolumeClaim:
+            claimName: pigallery2-pvc-data-tmp
+        - name: pigallery2-photos
+          persistentVolumeClaim:
+            claimName: pigallery2-pvc-photos
+      containers:
+        - image: docker.io/bpatrik/pigallery2:latest
+          name: pigallery2
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /app/data/config
+              name: pigallery2-data-config
+            - mountPath: /app/data/db
+              name: pigallery2-data-db
+            - mountPath: /app/data/tmp
+              name: pigallery2-data-tmp
+            - mountPath: /app/data/images
+              name: pigallery2-photos
+          resources: {}
+#
+# ExecStart=/usr/bin/podman container run \
+#   --network=host \
+#   --sdnotify=conmon \
+#   --name pigallery2 \
+#   --publish 3123:3123 \
+#   --env Server-port=3123 \
+#   --env NODE_ENV=debug \
+#   --volume /var/lib/podman-services/pigallery2/config:/app/data/config \
+#   --volume /var/lib/podman-services/pigallery2/db:/app/data/db \
+#   --volume /var/lib/podman-services/pigallery2/tmp:/app/data/tmp \
+#   --volume /srv/photos/originals:/app/data/images:ro \
+#   docker.io/bpatrik/pigallery2:latest
+# ExecStop=/usr/bin/podman stop -t 30 pigallery2
+# ExecStopPost=-/usr/bin/podman rm --ignore -f pigallery2
