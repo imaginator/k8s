@@ -1,23 +1,23 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: plexserver            # < name of ingress entry
-  namespace: plexserver       # < namespace where place the ingress enty
+  name: plexserver
+  namespace: plexserver
   annotations:
     cert-manager.io/cluster-issuer: "lets-encrypt"
 spec:
-  tls: # < placing a host in the TLS config will indicate a cert should be created
-  - hosts:
-    - plex.imaginator.com
-    secretName: plex.imaginator.com-tls # < cert-manager will store the created certificate in this secret.
+  tls:
+    - hosts:
+        - plex.imaginator.com
+      secretName: plex.imaginator.com-tls
   rules:
-  - host: plex.imaginator.com
-    http:
-      paths:
-      - backend:
-          service:
-            name: plexserver
-            port: 
-              name: pms-web
-        pathType: Prefix
-        path: "/"
+    - host: plex.imaginator.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: plexserver
+                port:
+                  name: pms-web
+            pathType: Prefix
+            path: "/"
