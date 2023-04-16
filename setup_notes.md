@@ -1,4 +1,4 @@
-``` lang=bash
+```lang=bash
 #!/bin/bash
 sudo apt update
 sudo apt upgrade
@@ -11,13 +11,12 @@ su - $USER
 microk8s status --wait-ready
 microk8s enable dns ingress prometheus cert-manager hostpath-storage dashboard
 
-# now setup Kubernetes
-alias kubectl='microk8s kubectl'
+# self signed certs
+kubectl apply -f ~/Documents/src/k8s/cert-manager/clusterIssuer/yml
+
+# other helpers
 kubectl cluster-info
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
 kubectl get all --all-namespaces
 kubectl get nodes
-# expose dashboard
-kubectl --namespace kubernetes-dashboard patch svc kubernetes-dashboard -p '{"spec": {"type": "NodePort"}}'
 
 ```
