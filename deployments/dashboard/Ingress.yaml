@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: k8s.imagilan
+  namespace: kubernetes-dashboard
+  annotations:
+    kubernetes.io/ingress.class: public
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+spec:
+  tls:
+    - hosts:
+        - dashboard.k8s.imaginator.com
+      secretName: dashboard.k8s.imaginator.com-tls
+  rules:
+    - host: dashboard.k8s.imaginator.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kubernetes-dashboard
+                port:
+                  number: 443
