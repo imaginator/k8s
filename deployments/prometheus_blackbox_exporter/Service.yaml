@@ -1,0 +1,15 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: prometheus-blackbox-exporter
+  namespace: observability
+  labels:
+    app: prometheus-blackbox-exporter
+spec:
+  selector:
+    app: prometheus-blackbox-exporter
+  ports:
+    - name: http
+      port: 9115
+      protocol: TCP
