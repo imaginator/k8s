@@ -13,7 +13,7 @@
         - f17gw.imagilan:9100
         - furrow-vpn.imagilan:9100
         - ln.imagilan:9100
-        - pi02.imagilan:9100
+        - friedapi.imagilan:9100
         - repeater-bedroom1.imagilan:9100
         - repeater-hof-north.imagilan:9100
         - repeater-lounge.imagilan:9100
@@ -36,7 +36,7 @@
     - source_labels: [__param_target]
       target_label: instance
     - target_label: __address__
-      replacement: 127.0.0.1:9116
+      replacement: prometheus-snmp-exporter:9116
 
 - job_name: "snmp-AirOS"
   scrape_interval: 90s
@@ -55,21 +55,7 @@
     - source_labels: [__param_target]
       target_label: instance
     - target_label: __address__
-      replacement: 127.0.0.1:9116
-
-- job_name: "openhab-server-metrics"
-  scrape_interval: 1m
-  scheme: http
-  metrics_path: /rest/metrics/prometheus
-  static_configs:
-    - targets:
-        - "bunker.imagilan:8080"
-
-- job_name: "openhab"
-  scrape_interval: 10s
-  static_configs:
-    - targets:
-        - bunker.imagilan:9997
+      replacement: prometheus-snmp-exporter:9116
 
 - job_name: "blackbox-web"
   scrape_interval: 60s
@@ -80,7 +66,7 @@
     - targets:
         - https://bunker.imaginator.com
         - http://bunker.imagilan
-        - http://openhab.imagilan
+        - http://ha.imagilan
   relabel_configs:
     - source_labels: [__address__]
       target_label: __param_target
