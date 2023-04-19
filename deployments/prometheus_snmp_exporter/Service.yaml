@@ -1,0 +1,15 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: prometheus-snmp-exporter
+  namespace: observability
+  labels:
+    app: prometheus-snmp-exporter
+spec:
+  selector:
+    app: prometheus-snmp-exporter
+  ports:
+    - name: http
+      port: 9116
+      protocol: TCP

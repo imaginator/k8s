@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-snmp-exporter
+  namespace: observability
+  labels:
+    app: prometheus-snmp-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus-snmp-exporter
+  template:
+    metadata:
+      labels:
+        app: prometheus-snmp-exporter
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: snmp-exporter
+          image: prom/snmp-exporter:v0.21.0
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+          args:
+            - "--config.file=/config/snmp.yaml"
+          resources: {}
+          ports:
+            - containerPort: 9116
+              name: http
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          volumeMounts:
+            - mountPath: /config
+              name: config
+        - name: configmap-reload
+          image: "jimmidyson/configmap-reload:v0.2.2"
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+          args:
+            - --volume-dir=/etc/config
+            - --webhook-url=http://localhost:9116/-/reload
+          resources: {}
+          volumeMounts:
+            - mountPath: /etc/config
+              name: config
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: prometheus-snmp-exporter-config-map
