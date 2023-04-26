@@ -1,0 +1,10 @@
+spec:
+  template:
+    spec:
+      containers:
+        - name: nginx-ingress-microk8s
+          ports:
+            - name: mqtt
+              containerPort: 1883
+              hostPort: 1883
+              protocol: TCP
