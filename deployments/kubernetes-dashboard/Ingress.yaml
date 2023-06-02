@@ -1,0 +1,56 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kubernetes-dashboard
+  namespace: kubernetes-dashboard
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    cert-manager.io/cluster-issuer: "lets-encrypt"
+    nginx.ingress.kubernetes.io/auth-url: "https://dashboard.k8s.imaginator.com/oauth2/auth?"
+    nginx.ingress.kubernetes.io/auth-signin: "https://dashboard.k8s.imaginator.com/oauth2/start?rd=https://$host$request_uri$is_args$args"
+    nginx.ingress.kubernetes.io/secure-backends: "true"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      auth_request_set $token $upstream_http_authorization;
+      proxy_set_header Authorization $token;
+spec:
+  tls:
+    - hosts:
+        - dashboard.k8s.imaginator.com
+      secretName: dashboard.k8s.imaginator.com-tls
+  rules:
+    - host: dashboard.k8s.imaginator.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: kubernetes-dashboard
+                port:
+                  number: 443
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kubernetes-dashboard-oauth2-proxy
+  namespace: kubernetes-dashboard
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: dashboard.k8s.imaginator.com
+      http:
+        paths:
+          - path: /oauth2
+            pathType: Prefix
+            backend:
+              service:
+                name: oauth2-proxy-service
+                port:
+                  number: 4180
+  tls:
+    - hosts:
+        - dashboard.k8s.imaginator.com
+      secretName: dashboard.k8s.imaginator.com-tls
+# https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?access_type=offline&display=popup&request_visible_actions=http%3A%2F%2Fschemas.google.com%2FAddActivity http%3A%2F%2Fschemas.google.com%2FListenActivity http%3A%2F%2Fschemas.google.com%2FCreateActivity&response_type=code&client_id=984739005367.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&redirect_uri=https%3A%2F%2Fsecure.soundcloud.com%2Fweb-auth-callback-google&state=2%3AeyJzZXJ2ZXJTdGF0ZSI6ImV5SjBlWEFpT2lKS1YxUWlMQ0poYkdjaU9pSklVekkxTmlKOS5leUoySWpvaVN6aHNRMVF5UjFoc1pXaFpNbHBCT1V4d1kzZG1URXBSWVVvNU1WTllZVEJyTm1GUkwwVXZRWEZxT0QwaUxDSmxlSEFpT2pFMk9ESXdPREUzTnpBc0ltOGlPaUpqYkdsbGJuUmZhV1E5UVhvMVVFOUJablJ3YldaeVJHRndVRTFoU1ZGTFMyMXVVWE50V2tSVlYwRWlmUS4xdmk0MTB2dkE2dXVScW5HRFlPTjZuUy1mV0Nmdm5Wek11S2FZdGYtZzhzIiwibm9uY2UiOiJFeHF5WXZFUXdZZE1CMVkxNVRxYXZTN3YuRnBTRGlObGNyVnhldH5zNjlFM3lTeHl4QmZlMnRVaWxiUjRHT1VnIn0%3D&service=lso&o2v=2&flowName=GeneralOAuthFlow
