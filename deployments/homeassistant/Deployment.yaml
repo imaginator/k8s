@@ -19,6 +19,9 @@ spec:
         - name: homeassistant-data
           persistentVolumeClaim:
             claimName: homeassistant-pvc-data
+        - name: ttyacm
+          hostPath:
+            path: /dev/ttyACM0
       containers:
         - image: docker.io/homeassistant/home-assistant:stable
           name: homeassistant
@@ -27,4 +30,11 @@ spec:
           volumeMounts:
             - mountPath: /config
               name: homeassistant-data
+            - mountPath: /dev/ttyACM0
+              name: ttyacm
+          securityContext:
+            privileged: true
+            capabilities:
+              drop: ["ALL"]
+              add: ["NET_RAW"]
           resources: {}
