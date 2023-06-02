@@ -4,11 +4,31 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: public
     nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    cert-manager.io/cluster-issuer: lets-encrypt
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
   name: homeassistant
   namespace: homeassistant
 spec:
+  tls:
+    - hosts:
+      - ha.imagilan
+    - hosts:
+      - ha.k8s.imaginator.com
+      secretName: ha.k8s.imaginator.com-tls
   rules:
     - host: ha.imagilan
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: homeassistant-service
+                port:
+                  name: ha-web
+    - host: ha.k8s.imaginator.com
       http:
         paths:
           - pathType: Prefix
