@@ -38,3 +38,4 @@ spec:
               drop: ["ALL"]
               add: ["NET_RAW"]
           resources: {}
+      terminationGracePeriodSeconds: 60
