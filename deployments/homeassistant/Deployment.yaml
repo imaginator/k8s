@@ -24,10 +24,12 @@ spec:
           hostPath:
             path: /dev/ttyACM0
       containers:
-        - image: docker.io/homeassistant/home-assistant:stable
+        - image: ghcr.io/home-assistant/home-assistant:stable
+          imagePullPolicy: Always
           name: homeassistant
           ports:
             - containerPort: 8123
+
           volumeMounts:
             - mountPath: /config
               name: homeassistant-data
