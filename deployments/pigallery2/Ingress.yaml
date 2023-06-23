@@ -11,10 +11,24 @@ spec:
     - host: pigallery2.imagilan
       http:
         paths:
-          - backend:
+          - path: "/web-screensaver" # serves the index.html file
+            pathType: Prefix
+            backend:
+              service:
+                name: webscreensaver
+                port:
+                  name: webscreensaver
+          - path: "/random_resized_image" # gets a file from pigallery and resizes
+            pathType: Prefix
+            backend:
+              service:
+                name: webscreensaver
+                port:
+                  name: webscreensaver
+          - path: "/"
+            pathType: Prefix
+            backend:
               service:
                 name: pigallery2
                 port:
                   name: pigallery2-web
-            pathType: Prefix
-            path: "/"

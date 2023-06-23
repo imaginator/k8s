@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: pigallery2
+  name: nginx-configuration
+data:
+  nginx.conf: |
+    user nginx;
+    load_module /usr/lib/nginx/modules/ngx_http_image_filter_module.so;
+    worker_processes 3;
+    error_log  /var/log/nginx/error.log;
+
+    events {
+      worker_connections 10240;
+    }
+
+    http {
+      log_format  main
+              'remote_addr:$remote_addr\t'
+              'time_local:$time_local\t'
+              'method:$request_method\t'
+              'uri:$request_uri\t'
+              'host:$host\t'
+              'status:$status\t'
+              'bytes_sent:$body_bytes_sent\t'
+              'referer:$http_referer\t'
+              'useragent:$http_user_agent\t'
+              'forwardedfor:$http_x_forwarded_for\t'
+              'request_time:$request_time';
+      access_log	/var/log/nginx/access.log main;
+      
+      server {  
+        listen 80;
+        listen [::]:80;
+        server_name _;
+
+        location /web-screensaver {
+            alias /var/www;
+            add_header Cache-Control "max-age=0, no-cache, no-store, must-revalidate";
+            add_header Pragma "no-cache";
+        }
+
+        location /random_resized_image/ {
+            rewrite ^ $request_uri;
+            rewrite ^/random_resized_image/(?<width>\d+)/(?<image>.*)$ $image break;
+            return 400;
+            proxy_pass http://pigallery2.imagilan/pgapi/gallery/random/$image;
+            image_filter resize $width -;
+            image_filter_jpeg_quality 90; # Desired JPG quality
+            image_filter_buffer 100M; # Will return 415 if image is bigger than this
+            proxy_http_version  1.1;
+            resolver 10.7.11.1;
+            add_header Cache-Control "max-age=0, no-cache, no-store, must-revalidate";
+            add_header Pragma "no-cache";
+        }
+      }
+    }
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <style>
+          body {
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            border: 0;
+          }
+          #random_resized_image {
+            position: relative;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 100%;
+          }
+        </style>
+      </head>
+      <body>
+        <div id="random_resized_image"></div>
+      </body>
+      <script>
+        // to negate options in pigallery2 use a "!" after the item in the UI
+        // e.g: person!:(Susanne Pickel) and person!:(Kristin Karu) and orientation:landscape and min-resolution:13
+        const rootUrl = "http://pigallery2.imagilan/random_resized_image";
+        const pictureQuery = encodeURIComponent(
+          '{"type":1,"list":[{"type":105,"text":"Susanne Pickel","negate":true,"matchType":1},{"type":105,"text":"Kristin Karu","negate":true,"matchType":1},{"type":17,"landscape":true},{"type":14,"value":10},{"type":104,"value":"intimate","negate":true}]}'
+        );
+        const randomImage = document.getElementById("random_resized_image");
+        randomImage.style.backgroundImage = `url(${rootUrl}/${window.innerWidth}/${pictureQuery})`;
+      </script>
+    </html>
+

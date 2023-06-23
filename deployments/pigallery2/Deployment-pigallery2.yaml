@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pigallery2
+  name: pigallery2
+  namespace: pigallery2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pigallery2
+  template:
+    metadata:
+      labels:
+        app: pigallery2
+    spec:
+      volumes:
+        - name: pigallery2-data-config
+          persistentVolumeClaim:
+            claimName: pigallery2-pvc-data-config
+        - name: pigallery2-data-db
+          persistentVolumeClaim:
+            claimName: pigallery2-pvc-data-db
+        - name: pigallery2-data-tmp
+          persistentVolumeClaim:
+            claimName: pigallery2-pvc-data-tmp
+        - name: pigallery2-photos
+          persistentVolumeClaim:
+            claimName: pigallery2-pvc-photos
+      containers:
+        - name: pigallery2
+          image: docker.io/bpatrik/pigallery2:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /app/data/config
+              name: pigallery2-data-config
+            - mountPath: /app/data/db
+              name: pigallery2-data-db
+            - mountPath: /app/data/tmp
+              name: pigallery2-data-tmp
+            - mountPath: /app/data/images
+              name: pigallery2-photos
+          resources: {}
+          env:
+          - name: NODE_ENV
+            value: "production"
+          - name: Server-Log-level
+            value: "debug"
+          - name: Server-applicationTitle
+            value: "imagiPhoto"
+          - name: "RandomPhoto-enabled"
+            value: "true"
+          - name: "Sharing-enabled"
+            value: "true"
+          # Enables user management with login to password protect the gallery. (default: true)
+          - name: Users-authenticationRequired    
+            value: "false"
+          # Default user right when password protection is disabled. (default: 'Admin')
+          - name: Users-unAuthenticatedUserRole
+            value: "User"
+          # the random links are a "share" and we need to disable the passwords on them.
+          - name: Sharing-passwordProtected
+            value: "false"
+          # Creates these users in the DB during startup if they do not exist. If a user with this name exist, it won't be overwritten, even if the role is different. (default: [])
+          # - name: Users-enforcedUsers            
+          #   value: '["admin", "BMW", "Fiat"]'

@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: webscreensaver
+  name: webscreensaver
+  namespace: pigallery2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webscreensaver
+  template:
+    metadata:
+      labels:
+        app: webscreensaver
+    spec:
+      volumes:
+        - name: nginx-configuration
+          configMap:
+            name: nginx-configuration # place ConfigMap `nginx-conf` on /etc/nginx
+            items:
+              - key: nginx.conf
+                path: nginx.conf
+        - name: index-html
+          configMap:
+            name: nginx-configuration 
+            items:
+              - key: index.html
+                path: index.html
+        - name: log
+          emptyDir: {}
+
+      containers:
+        - name: nginx
+          image: nginx:mainline
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: /etc/nginx # mount nginx-conf volumn to /etc/nginx
+              readOnly: true
+              name: nginx-configuration
+            - mountPath: /var/www # mount nginx-conf volumn to /etc/nginx
+              readOnly: true
+              name: index-html
+            - mountPath: /var/log/nginx
+              name: log
+          resources: {}
