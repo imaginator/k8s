@@ -7,15 +7,9 @@ metadata:
   namespace: plexserver
 spec:
   replicas: 1
-  revisionHistoryLimit: 0
   selector:
     matchLabels:
       app: plexserver
-  strategy:
-    rollingUpdate:
-      maxSurge: 0
-      maxUnavailable: 1
-    type: RollingUpdate
   template:
     metadata:
       labels:
