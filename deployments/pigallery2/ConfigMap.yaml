@@ -88,6 +88,10 @@ data:
         );
         const randomImage = document.getElementById("random_resized_image");
         randomImage.style.backgroundImage = `url(${rootUrl}/${window.innerWidth}/${pictureQuery})`;
+        // update the background image every 30 minutes with a cache buster
+        setInterval(() => {
+          randomImage.style.backgroundImage = `url(${rootUrl}/${window.innerWidth}/${pictureQuery}?${Math.random()})`;
+        }, 1000 * 60 * 30);
       </script>
     </html>
 
