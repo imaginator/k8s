@@ -36,8 +36,7 @@ data:
 
         location /web-screensaver {
             alias /var/www;
-            add_header Cache-Control "max-age=0, no-cache, no-store, must-revalidate";
-            add_header Pragma "no-cache";
+            add_header Cache-Control "max-age=86400";
         }
 
         location /random_resized_image/ {
