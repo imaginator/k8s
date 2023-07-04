@@ -46,7 +46,8 @@ data:
             return 400;
             proxy_pass http://pigallery2.imagilan/pgapi/gallery/random/$image;
             image_filter resize $width -;
-            image_filter_jpeg_quality 90; # Desired JPG quality
+            image_filter_jpeg_quality 85; # Desired JPG quality
+            image_filter_interlace on;
             image_filter_buffer 100M; # Will return 415 if image is bigger than this
             proxy_http_version  1.1;
             resolver 10.7.11.1;
