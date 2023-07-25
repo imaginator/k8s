@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: imagery
+  namespace: imagery
+spec:
+  ports:
+    - name: imagery-web
+      port: 80
+      protocol: TCP
+      targetPort: 9000
+  selector:
+    app: imagery

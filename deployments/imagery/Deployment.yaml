@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: imagery
+  labels:
+    app: imagery
+  name: imagery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: imagery
+  template:
+    metadata:
+      labels:
+        app: imagery
+    spec:
+      containers:
+      - name: imagery
+        image: h2non/imaginary:latest
+        args: ["-enable-url-source"]
+        resources: {}
+        ports:
+        - containerPort: 9000
+
