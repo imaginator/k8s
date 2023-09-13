@@ -67,7 +67,9 @@ data:
                 padding: 0;
                 width: 100vw;
                 height: 100vh;
-                transition: all 5s ease-in;
+                background-position: center center;
+                background-repeat: no-repeat;
+                background-color: black;
             }
         </style>
     </head>
@@ -86,10 +88,17 @@ data:
                 },
                 {
                     "type": 105,
+                    "text": "Maggie Valenzuela",
+                    "negate": true,
+                    "matchType": 1
+                },
+                {
+                    "type": 105,
                     "text": "Kristin Karu",
                     "negate": true,
                     "matchType": 1
-                }, {
+                },
+                {
                     "type": 105,
                     "text": "Antonia Merran",
                     "negate": true,
@@ -103,7 +112,7 @@ data:
                 },
                 {
                     "type": 104,
-                    "value": "intimate",
+                    "text": "intimate",
                     "negate": true,
                     "matchtype": 1
                 },
@@ -116,18 +125,17 @@ data:
                 {
                     "type": 17,
                     "landscape": true
-                },
-                {
-                    "type": 14,
-                    "value": 1
                 }
             ]
         }
+        //  http://imagery.k8s.imagilan/resize?width=${width}&gravity=smart&url=http://pigallery2.imagilan/pgapi/gallery/random/{%22type%22:1,%22list%22:[{%22type%22:105,%22text%22:%22Susanne%20Pickel%22,%22negate%22:true,%22matchType%22:1},{%22type%22:105,%22text%22:%22Kristin%20Karu%22,%22negate%22:true,%22matchType%22:1},{%22type%22:17,%22landscape%22:true},{%22type%22:14,%22value%22:10},{%22type%22:104,%22value%22:%22intimate%22,%22negate%22:true}]}?random=${timestamp}",
         const baseUrl = "http://pigallery2.imagilan/random_resized_image";
+        //  const baseUrl = "http://imagery.k8s.imagilan/resize?width=" +${window.innerWidth} + "&gravity=smart&url=http://pigallery2.imagilan/pgapi/gallery/random/";
 
         function updateBackground() {
             let randomPictureQueryStringified = encodeURIComponent(JSON.stringify(randomPictureQuery)).replace(/[\/\(\)\']/g, "\\$&");
             document.querySelector('body').style.backgroundImage = `url(${baseUrl}/${window.innerWidth}/${randomPictureQueryStringified}?${Math.random()})`;
+            // document.querySelector('body').style.backgroundImage = `url(${baseUrl}/${randomPictureQueryStringified}?${Math.random()})`;
         }
 
         updateBackground();
@@ -139,4 +147,3 @@ data:
     </script>
 
     </html>
-
