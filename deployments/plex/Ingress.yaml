@@ -5,13 +5,14 @@ metadata:
   namespace: plexserver
   annotations:
     cert-manager.io/cluster-issuer: lets-encrypt
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
 spec:
   tls:
     - hosts:
-        - plex.imaginator.com
-      secretName: plex.imaginator.com-tls
+        - plex.imagilan.imaginator.com
+      secretName: plex.imagilan.imaginator.com-tls
   rules:
-    - host: plex.imaginator.com
+    - host: plex.imagilan.imaginator.com
       http:
         paths:
           - backend:
