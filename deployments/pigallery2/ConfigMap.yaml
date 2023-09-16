@@ -43,7 +43,7 @@ data:
             rewrite ^ $request_uri;
             rewrite ^/random_resized_image/(?<width>\d+)/(?<image>.*)$ $image break;
             return 400;
-            proxy_pass http://pigallery2.imagilan/pgapi/gallery/random/$image;
+            proxy_pass https://pigallery2.imagilan.imaginator.com/pgapi/gallery/random/$image;
             image_filter resize $width -;
             image_filter_jpeg_quality 85; # Desired JPG quality
             image_filter_interlace on;
@@ -129,7 +129,7 @@ data:
             ]
         }
         //  http://imagery.k8s.imagilan/resize?width=${width}&gravity=smart&url=http://pigallery2.imagilan/pgapi/gallery/random/{%22type%22:1,%22list%22:[{%22type%22:105,%22text%22:%22Susanne%20Pickel%22,%22negate%22:true,%22matchType%22:1},{%22type%22:105,%22text%22:%22Kristin%20Karu%22,%22negate%22:true,%22matchType%22:1},{%22type%22:17,%22landscape%22:true},{%22type%22:14,%22value%22:10},{%22type%22:104,%22value%22:%22intimate%22,%22negate%22:true}]}?random=${timestamp}",
-        const baseUrl = "http://pigallery2.imagilan/random_resized_image";
+        const baseUrl = "https://pigallery2.imagilan.imaginator.com/random_resized_image";
         //  const baseUrl = "http://imagery.k8s.imagilan/resize?width=" +${window.innerWidth} + "&gravity=smart&url=http://pigallery2.imagilan/pgapi/gallery/random/";
 
         function updateBackground() {
@@ -142,7 +142,7 @@ data:
 
         setInterval(() => {
             updateBackground();
-        }, 1000 * 60 * 60 * 1);
+        }, 1000 * 60 * 5 * 1);
 
     </script>
 

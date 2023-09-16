@@ -46,3 +46,10 @@ spec:
             - mountPath: /var/log/nginx
               name: log
           resources: {}
+        - name: imagery
+          image: h2non/imaginary:latest
+          args: ["-enable-url-source"]
+          resources: {}
+          ports:
+          - containerPort: 9000
+

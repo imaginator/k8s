@@ -5,10 +5,14 @@ metadata:
   namespace: pigallery2
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: HTTP
-    kubernetes.io/ingress.class: public
+    cert-manager.io/cluster-issuer: lets-encrypt
 spec:
+  tls:
+    - hosts:
+      - pigallery2.imagilan.imaginator.com
+      secretName: pigallery2.imagilan.imaginator.com-tls
   rules:
-    - host: pigallery2.imagilan
+    - host: pigallery2.imagilan.imaginator.com
       http:
         paths:
           - path: "/web-screensaver" # serves the index.html file
@@ -32,3 +36,10 @@ spec:
                 name: pigallery2
                 port:
                   name: pigallery2-web
+          - path: /imaginary
+            pathType: Prefix
+            backend:
+              service:
+                name: imagery
+                port:
+                  name: imagery-web        
