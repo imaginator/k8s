@@ -15,25 +15,6 @@ spec:
       labels:
         app: plexserver
     spec:
-      volumes:
-        - name: plex-data
-          persistentVolumeClaim:
-            claimName: plexserver-pvc-data
-        - name: plex-films
-          persistentVolumeClaim:
-            claimName: plexserver-pvc-film
-        - name: plex-tv
-          persistentVolumeClaim:
-            claimName: plexserver-pvc-tv
-        - name: plex-audiobooks
-          persistentVolumeClaim:
-            claimName: plexserver-pvc-audiobooks
-        - name: plex-music
-          persistentVolumeClaim:
-            claimName: plexserver-pvc-music
-        - name: plex-photos
-          persistentVolumeClaim:
-            claimName: plexserver-pvc-photos
       containers:
         - env:
             - name: PLEX_CLAIM
@@ -53,6 +34,8 @@ spec:
               name: plex-films
             - mountPath: /media/tv
               name: plex-tv
+            - mountPath: /media/clips
+              name: plex-clips
             - mountPath: /media/audiobooks
               name: plex-audiobooks
             - mountPath: /media/music
@@ -96,4 +79,25 @@ spec:
           resources: {}
           stdin: true
           tty: true
-      restartPolicy: Always
+      restartPolicy: Always      volumes:
+        - name: plex-data
+          persistentVolumeClaim:
+            claimName: plexserver-pvc-data
+        - name: plex-films
+          persistentVolumeClaim:
+            claimName: plexserver-pvc-film
+        - name: plex-tv
+          persistentVolumeClaim:
+            claimName: plexserver-pvc-tv
+        - name: plex-audiobooks
+          persistentVolumeClaim:
+            claimName: plexserver-pvc-audiobooks
+        - name: plex-music
+          persistentVolumeClaim:
+            claimName: plexserver-pvc-music
+        - name: plex-clips
+          persistentVolumeClaim:
+            claimName: plexserver-pvc-clips
+        - name: plex-photos
+          persistentVolumeClaim:
+            claimName: plexserver-pvc-photos

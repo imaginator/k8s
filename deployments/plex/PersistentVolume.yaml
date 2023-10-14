@@ -104,3 +104,21 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: ""
   volumeMode: Filesystem
+
+--- 
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: plexserver-pv-filesystem-clips
+  namespace: plexserver
+spec:
+  capacity:
+    storage: 10Gi
+  hostPath:
+    path: /srv/video/Clips
+  accessModes:
+    - ReadOnlyMany
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: ""
+  volumeMode: Filesystem
